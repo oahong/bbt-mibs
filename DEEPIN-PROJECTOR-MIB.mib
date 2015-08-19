@@ -1,0 +1,127 @@
+DEEPIN-PROJECTOR-MIB DEFINITIONS ::= BEGIN
+
+IMPORTS
+	OBJECT-TYPE, MODULE-IDENTITY, Integer32
+		FROM SNMPv2-SMI
+	TEXTUAL-CONVENTION
+		FROM SNMPv2-TC
+	MODULE-COMPLIANCE, OBJECT-GROUP
+		FROM SNMPv2-CONF
+	nebulabd
+		FROM DEEPIN-NEBULABD-MIB;
+
+projector MODULE-IDENTITY
+    LAST-UPDATED "201508190642Z" -- 18 Aug 2015, 09:03 UTC
+    ORGANIZATION "deepin"
+    CONTACT-INFO "postal:   The 6th Floor, Building B18,
+                            No. 77, Optics Valley Avenue,
+                            Wuhan, China
+                  Tel:      +86-021-60726030
+				  email:    deepin@gmail.com
+                 "
+    DESCRIPTION  "MIB definition of projector
+                 "
+	REVISION     "201508190642Z"
+    DESCRIPTION  "Define StatusValue as a TEXTUAL-CONVENTION, define conformance group"
+    REVISION     "201508180903Z"
+    DESCRIPTION  "Initial MIB definition for projector"
+    ::= { nebulabd 3 }
+
+StatusValue ::= TEXTUAL-CONVENTION
+	STATUS       current
+	DESCRIPTION  "Predefined status flags"
+	SYNTAX INTEGER {
+		unknown (-1),
+		online (0),
+		uncontrollable (1),
+		offline (2),
+		failure (3)
+	}
+
+projectorMIBConformance OBJECT IDENTIFIER ::= { projector 10 }
+projectorMIBCompliances OBJECT IDENTIFIER ::= { projectorMIBConformance 1 }
+projectorMIBGroups OBJECT IDENTIFIER ::= { projectorMIBConformance 2 }
+
+vendor OBJECT-TYPE
+	SYNTAX OCTET STRING (SIZE(2..50))
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION
+		"Return vendor name in English
+		"
+	DEFVAL { "nebulabd" }
+::= { projector 100 }
+
+workStatus OBJECT-TYPE
+	SYNTAX StatusValue
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION
+		"Return work status
+		"
+	DEFVAL { unknown }
+::= { projector 2 }
+
+lampUptime OBJECT-TYPE
+	SYNTAX Integer32 (0..8544)
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION
+		"Projector uptime, hour is the unit
+		"
+	DEFVAL { 0 }
+::= { projector 3 }
+
+lampLumens OBJECT-TYPE
+	SYNTAX Integer32 (1000..3000)
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION
+		"threshold is 1900, which means
+		 we need to replace the lamp
+		"
+	DEFVAL { 3000 }
+::= { projector 4 }
+
+lampWarning OBJECT-TYPE
+	SYNTAX Integer32 (0..1)
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION
+		"Return 1 if lamp lumen is less the the threshold, 1900
+		 Return 0 if there's no warning
+		"
+::= { projector 5 }
+
+-- *****************************************************************
+--   Conformance information
+-- *****************************************************************
+projectorMIBCompliance MODULE-COMPLIANCE
+	STATUS       current
+	DESCRIPTION  "The compliance statement for the status groups"
+	MODULE
+		MANDATORY-GROUPS {
+			projectorGroup,
+			lampGroup
+		}
+	::= { projectorMIBCompliances 1 }
+
+projectorGroup OBJECT-GROUP
+	OBJECTS {
+		vendor,
+		workStatus
+	}
+	STATUS      current
+	DESCRIPTION "Projector status"
+	::= { projectorMIBGroups 1 }
+
+lampGroup OBJECT-GROUP
+	OBJECTS {
+		lampUptime,
+		lampLumens,
+		lampWarning
+	}
+	STATUS      current
+	DESCRIPTION "Lamp status"
+    ::= { projectorMIBGroups 2}
+END

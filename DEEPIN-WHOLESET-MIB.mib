@@ -1,0 +1,106 @@
+DEEPIN-WHOLESET-MIB DEFINITIONS ::= BEGIN
+
+IMPORTS
+	OBJECT-TYPE, MODULE-IDENTITY
+		FROM SNMPv2-SMI
+	TEXTUAL-CONVENTION
+		FROM SNMPv2-TC
+	MODULE-COMPLIANCE, OBJECT-GROUP
+		FROM SNMPv2-CONF
+	nebulabd
+		FROM DEEPIN-NEBULABD-MIB;
+
+wholeset MODULE-IDENTITY
+    LAST-UPDATED "201508190652Z"
+    ORGANIZATION "deepin"
+    CONTACT-INFO "postal:   The 6th Floor, Building B18,
+                            No. 77, Optics Valley Avenue,
+                            Wuhan, China
+                  Tel:      +86-021-60726030
+                  email:    deepin@gmail.com
+                 "
+    DESCRIPTION  "MIB definition of wholeset
+                 "
+	REVISION     "201508190652Z"
+    DESCRIPTION  "Define StatusValue as a TEXTUAL-CONVENTION, define conformance group"
+	REVISION     "201508180914Z"
+    DESCRIPTION  "Initial version"
+    ::= { nebulabd 4 }
+
+wholesetMIBConformance OBJECT IDENTIFIER ::= { wholeset 10 }
+wholesetMIBCompliances OBJECT IDENTIFIER ::= { wholesetMIBConformance 1 }
+wholesetMIBGroups OBJECT IDENTIFIER ::= { wholesetMIBConformance 2 }
+
+StatusValue ::= TEXTUAL-CONVENTION
+	STATUS      current
+	DESCRIPTION "Predefined status flags"
+	SYNTAX INTEGER {
+		unknown (-1),
+		ok (0),
+		abnormal (1)
+	}
+
+ChannelValue ::= TEXTUAL-CONVENTION
+	STATUS      current
+	DESCRIPTION "Video signal channel"
+	SYNTAX INTEGER {
+		unknown (-1),
+		tv (0),
+		av (1),
+		vga1 (2),
+		vga2 (3),
+		hdmi1 (4),
+		hdmi2 (5)
+    }
+
+vendor OBJECT-TYPE
+	SYNTAX OCTET STRING (SIZE (2..50))
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION
+		"Return Vendor name in English
+		"
+	DEFVAL { "nebulabd" }
+::= { wholeset 100 }
+
+connStatus OBJECT-TYPE
+	SYNTAX StatusValue
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION
+		"Return connection status
+		"
+	DEFVAL { unknown }
+::= { wholeset 1 }
+
+signalChannel OBJECT-TYPE
+	SYNTAX ChannelValue
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION
+		"Return which signal channel the device
+		 is currently using
+		"
+	DEFVAL { unknown }
+::= { wholeset 2 }
+
+-- *****************************************************************
+--   Conformance information
+-- *****************************************************************
+wholesetMIBCompliance MODULE-COMPLIANCE
+	STATUS       current
+	DESCRIPTION  "The compliance statement for the status groups"
+	MODULE
+		MANDATORY-GROUPS { wholesetGroup }
+	::= { wholesetMIBCompliances 1 }
+
+wholesetGroup OBJECT-GROUP
+	OBJECTS {
+		vendor,
+		connStatus,
+		signalChannel
+	}
+	STATUS      current
+	DESCRIPTION "Wholeset status"
+	::= { wholesetMIBGroups 1 }
+END

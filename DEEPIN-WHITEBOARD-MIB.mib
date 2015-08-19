@@ -1,0 +1,92 @@
+DEEPIN-WHITEBOARD-MIB DEFINITIONS ::= BEGIN
+
+IMPORTS
+	OBJECT-TYPE, MODULE-IDENTITY
+		FROM SNMPv2-SMI
+	TEXTUAL-CONVENTION
+		FROM SNMPv2-TC
+	MODULE-COMPLIANCE, OBJECT-GROUP
+		FROM SNMPv2-CONF
+	nebulabd
+		FROM DEEPIN-NEBULABD-MIB;
+
+whiteboard MODULE-IDENTITY
+    LAST-UPDATED "201508190630Z"
+    ORGANIZATION "deepin"
+    CONTACT-INFO "postal:   The 6th Floor, Building B18,
+                            No. 77, Optics Valley Avenue,
+                            Wuhan, China
+                  Tel:      +86-021-60726030
+				  email:    deepin@gmail.com
+                 "
+    DESCRIPTION  "MIB definition of whiteboard
+                 "
+	REVISION     "201508190630Z"
+    DESCRIPTION  "Define StatusValue as a TEXTUAL-CONVENTION, define conformance group"
+    REVISION     "201508180903Z"
+    DESCRIPTION  "Initial MIB definition for whiteboard"
+    ::= { nebulabd 2 }
+
+whiteboardMIBConformance OBJECT IDENTIFIER ::= { whiteboard 10 }
+whiteboardMIBCompliances OBJECT IDENTIFIER ::= { whiteboardMIBConformance 1 }
+whiteboardMIBGroups OBJECT IDENTIFIER ::= { whiteboardMIBConformance 2 }
+
+StatusValue ::= TEXTUAL-CONVENTION
+	STATUS      current
+	DESCRIPTION "Predefined status flags"
+	SYNTAX INTEGER {
+		unknown (-1),
+		ok (0),
+		abnormal (1)
+	}
+
+vendor OBJECT-TYPE
+	SYNTAX OCTET STRING (SIZE(2..50))
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION
+		"Vendor info
+		"
+	DEFVAL { "nebulabd" }
+::= { whiteboard 100 }
+
+connStatus OBJECT-TYPE
+	SYNTAX StatusValue
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION
+		"Connection status
+		"
+	DEFVAL { unknown }
+::= { whiteboard 1 }
+
+workStatus OBJECT-TYPE
+	SYNTAX StatusValue
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION
+		"Work status
+		"
+	DEFVAL { unknown }
+::= { whiteboard 2 }
+
+-- *****************************************************************
+--   Conformance information
+-- *****************************************************************
+whiteboardMIBCompliance MODULE-COMPLIANCE
+	STATUS       current
+	DESCRIPTION  "The compliance statement for the status groups"
+	MODULE
+		MANDATORY-GROUPS { whiteboardGroup }
+	::= { whiteboardMIBCompliances 1 }
+
+whiteboardGroup OBJECT-GROUP
+	OBJECTS {
+		vendor,
+		connStatus,
+		workStatus
+	}
+	STATUS      current
+	DESCRIPTION "Whiteboard status"
+	::= { whiteboardMIBGroups 1 }
+END

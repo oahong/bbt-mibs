@@ -1,0 +1,92 @@
+DEEPIN-PHOTOGRAPHY-MIB DEFINITIONS ::= BEGIN
+
+IMPORTS
+	OBJECT-TYPE, MODULE-IDENTITY
+		FROM SNMPv2-SMI
+	TEXTUAL-CONVENTION
+		FROM SNMPv2-TC
+	MODULE-COMPLIANCE, OBJECT-GROUP
+		FROM SNMPv2-CONF
+	nebulabd
+		FROM DEEPIN-NEBULABD-MIB;
+
+photography MODULE-IDENTITY
+    LAST-UPDATED "201508190328Z"
+    ORGANIZATION "deepin"
+    CONTACT-INFO "postal:   The 6th Floor, Building B18,
+                            No. 77, Optics Valley Avenue,
+                            Wuhan, China
+                  Tel:      +86-021-60726030
+                  email:    deepin@gmail.com
+                 "
+    DESCRIPTION  "Initial MIB definition for document scanner.
+                 "
+    REVISION     "201508190328Z"
+    DESCRIPTION  "Get rid of TEXTUAL-CONVERTION and conformance group warnings"
+    ::= { nebulabd 1 }
+
+photographyMIBConformance OBJECT IDENTIFIER ::= { photography 10 }
+photographyMIBCompliances OBJECT IDENTIFIER ::= { photographyMIBConformance 1 }
+photographyMIBGroups OBJECT IDENTIFIER ::= { photographyMIBConformance 2 }
+
+StatusValue ::= TEXTUAL-CONVENTION
+	STATUS       current
+	DESCRIPTION  "Predefined status flags"
+	SYNTAX INTEGER {
+		unknown (-1),
+		ok (0),
+		abnormal (1),
+		noOutput (2)
+	}
+
+
+vendor OBJECT-TYPE
+	SYNTAX OCTET STRING (SIZE(2..50))
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION
+		"Return vendor name in English
+		"
+	DEFVAL { "nebulabd" }
+::= { photography 100 }
+
+connStatus OBJECT-TYPE
+	SYNTAX StatusValue
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION
+		"Connection status
+		"
+	DEFVAL { unknown }
+::= { photography 1 }
+
+workStatus OBJECT-TYPE
+	SYNTAX StatusValue
+	MAX-ACCESS read-only
+	STATUS current
+	DESCRIPTION
+		"Work status
+		"
+	DEFVAL { unknown }
+::= { photography 2 }
+
+-- *****************************************************************
+--   Conformance information
+-- *****************************************************************
+photographyMIBCompliance MODULE-COMPLIANCE
+	STATUS       current
+	DESCRIPTION  "The compliance statement for the status groups"
+	MODULE
+		MANDATORY-GROUPS { photographyGroup }
+	::= { photographyMIBCompliances 1 }
+
+photographyGroup OBJECT-GROUP
+	OBJECTS {
+		vendor,
+		connStatus,
+		workStatus
+	}
+	STATUS      current
+	DESCRIPTION "Photography status"
+	::= { photographyMIBGroups 1 }
+END

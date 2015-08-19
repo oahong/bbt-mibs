@@ -1,0 +1,43 @@
+-- **********************************************************************
+-- Copyright WuHan Deepin Technology Ltd. Co. (2015-)                   *
+-- **********************************************************************
+--
+--  Change History:
+--
+--  Jul 30, 2005 - honghao made the initial version
+--
+-- **********************************************************************
+
+
+DEEPIN-NEBULABD-MIB DEFINITIONS ::= BEGIN
+
+IMPORTS
+	MODULE-IDENTITY,
+	enterprises
+	FROM SNMPv2-SMI
+	;
+
+deepin MODULE-IDENTITY
+    LAST-UPDATED "201508190320Z"
+    ORGANIZATION "deepin"
+    CONTACT-INFO "postal:   The 6th Floor, Building B18,
+                            No. 77, Optics Valley Avenue,
+                            Wuhan, China
+                            
+                  email:    deepin@gmail.com
+                 "
+    DESCRIPTION  "MIB definition of deepin root
+                 "
+    REVISION     "201507301305Z"
+    DESCRIPTION  "First draft"
+    REVISION     "201508190320Z"
+    DESCRIPTION  "split old deepin.mib"
+    ::= { enterprises 46209 }
+    
+nebulabd       OBJECT IDENTIFIER ::= { deepin 1 }
+-- photography OBJECT IDENTIFIER ::= { nebuladb 1 }
+-- whiteboard  OBJECT IDENTIFIER ::= { nebuladb 2 }
+-- projector   OBJECT IDENTIFIER ::= { nebuladb 3 }
+-- wholeset    OBJECT IDENTIFIER ::= { nebuladb 4 }
+
+END
