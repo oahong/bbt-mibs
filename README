@@ -1,12 +1,12 @@
-1）使用smilint校验MIBs,需修改 smi.conf, 配置path
-for i in DEEPIN*.mib; do echo verify $i; smilint -c smi.conf DEEPIN-WHOLESET-MIB.mib; done
+1）使用smilint校验MIBs,需修改 smi.conf, 配置path,确保DEEPIN-NEBULABD-MIB.mib的路径包含在path中：
+for i in DEEPIN*.mib; do echo verify $i; smilint -c smi.conf $i; done
 
 2）使用mib2c生成代码：
 for i in photography whiteboard projector wholeset; do env MIBS="+./DEEPIN-${i^^}-MIB.mib" mib2c $i; done
 生成代码的时候有多种提示选择的时候，如果依次选择 1 (SNMP) 2（INT), 可以编译成功作简单测试。但是不太理解我们最后使用哪种方式生成代码
 
 3）生成.so
-直接运行make
+运行make,编译成so模块
 
 4）启动snmpd，测试模块(修改dlmod中模块的路径),DEEPIN*.mib可以放置在 ~/.snmp/mibs 下
 sudo snmpd -c snmpd.conf -d -f -Lo  -V localhost:161
