@@ -5,7 +5,7 @@ LDFLAGS := $(shell net-snmp-config --libs)
 SRC := $(wildcard *.c)
 LIB := $(patsubst %.c, %.so, $(notdir ${SRC}))
 
-all:$(LIB)
+all: clean $(LIB)
 	
 %.so: %.c
 	@echo compiling $@
