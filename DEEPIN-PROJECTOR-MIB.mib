@@ -1,7 +1,8 @@
 DEEPIN-PROJECTOR-MIB DEFINITIONS ::= BEGIN
 
 IMPORTS
-	OBJECT-TYPE, MODULE-IDENTITY, Integer32
+	OBJECT-TYPE, MODULE-IDENTITY,
+	DisplayString, Integer32
 		FROM SNMPv2-SMI
 	TEXTUAL-CONVENTION
 		FROM SNMPv2-TC
@@ -11,7 +12,7 @@ IMPORTS
 		FROM DEEPIN-NEBULABD-MIB;
 
 projector MODULE-IDENTITY
-    LAST-UPDATED "201508190642Z" -- 18 Aug 2015, 09:03 UTC
+    LAST-UPDATED "201510201454Z" -- 20 Oct 2015, 14:54 UTC
     ORGANIZATION "deepin"
     CONTACT-INFO "postal:   The 6th Floor, Building B18,
                             No. 77, Optics Valley Avenue,
@@ -21,6 +22,8 @@ projector MODULE-IDENTITY
                  "
     DESCRIPTION  "MIB definition of projector
                  "
+	REVISION     "201510201454Z"
+    DESCRIPTION  "Define vendor as a DisplayString instead of OCTET STRING"
 	REVISION     "201508190642Z"
     DESCRIPTION  "Define StatusValue as a TEXTUAL-CONVENTION, define conformance group"
     REVISION     "201508180903Z"
@@ -43,11 +46,11 @@ projectorMIBCompliances OBJECT IDENTIFIER ::= { projectorMIBConformance 1 }
 projectorMIBGroups OBJECT IDENTIFIER ::= { projectorMIBConformance 2 }
 
 vendor OBJECT-TYPE
-	SYNTAX OCTET STRING (SIZE(2..50))
+	SYNTAX DisplayString (SIZE(2..50))
 	MAX-ACCESS read-only
 	STATUS current
 	DESCRIPTION
-		"Return vendor name in English
+		"Return vendor name
 		"
 	DEFVAL { "nebulabd" }
 ::= { projector 100 }

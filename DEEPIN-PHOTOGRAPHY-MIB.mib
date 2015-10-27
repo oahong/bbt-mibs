@@ -19,7 +19,7 @@ photography MODULE-IDENTITY
                   Tel:      +86-021-60726030
                   email:    deepin@gmail.com
                  "
-    DESCRIPTION  "Initial MIB definition for document scanner.
+    DESCRIPTION  "MIB definition for document scanner.
                  "
     REVISION     "201510200232Z"
     DESCRIPTION  "Use DisplayString instead of STRING"

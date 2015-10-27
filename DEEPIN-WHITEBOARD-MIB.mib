@@ -1,7 +1,8 @@
 DEEPIN-WHITEBOARD-MIB DEFINITIONS ::= BEGIN
 
 IMPORTS
-	OBJECT-TYPE, MODULE-IDENTITY
+	OBJECT-TYPE, MODULE-IDENTITY,
+	DisplayString
 		FROM SNMPv2-SMI
 	TEXTUAL-CONVENTION
 		FROM SNMPv2-TC
@@ -11,7 +12,7 @@ IMPORTS
 		FROM DEEPIN-NEBULABD-MIB;
 
 whiteboard MODULE-IDENTITY
-    LAST-UPDATED "201508190630Z"
+    LAST-UPDATED "201510210911Z"
     ORGANIZATION "deepin"
     CONTACT-INFO "postal:   The 6th Floor, Building B18,
                             No. 77, Optics Valley Avenue,
@@ -21,6 +22,8 @@ whiteboard MODULE-IDENTITY
                  "
     DESCRIPTION  "MIB definition of whiteboard
                  "
+	REVISION     "201510210911Z"
+    DESCRIPTION  "Define vendor as a DisplayString"
 	REVISION     "201508190630Z"
     DESCRIPTION  "Define StatusValue as a TEXTUAL-CONVENTION, define conformance group"
     REVISION     "201508180903Z"
@@ -41,7 +44,7 @@ StatusValue ::= TEXTUAL-CONVENTION
 	}
 
 vendor OBJECT-TYPE
-	SYNTAX OCTET STRING (SIZE(2..50))
+	SYNTAX DisplayString (SIZE(2..50))
 	MAX-ACCESS read-only
 	STATUS current
 	DESCRIPTION

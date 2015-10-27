@@ -1,7 +1,8 @@
 DEEPIN-WHOLESET-MIB DEFINITIONS ::= BEGIN
 
 IMPORTS
-	OBJECT-TYPE, MODULE-IDENTITY
+	OBJECT-TYPE, MODULE-IDENTITY,
+	DisplayString
 		FROM SNMPv2-SMI
 	TEXTUAL-CONVENTION
 		FROM SNMPv2-TC
@@ -11,7 +12,7 @@ IMPORTS
 		FROM DEEPIN-NEBULABD-MIB;
 
 wholeset MODULE-IDENTITY
-    LAST-UPDATED "201508190652Z"
+    LAST-UPDATED "201510210926Z"
     ORGANIZATION "deepin"
     CONTACT-INFO "postal:   The 6th Floor, Building B18,
                             No. 77, Optics Valley Avenue,
@@ -21,6 +22,8 @@ wholeset MODULE-IDENTITY
                  "
     DESCRIPTION  "MIB definition of wholeset
                  "
+	REVISION     "201510210926Z"
+    DESCRIPTION  "Define vendor as a DisplayString"
 	REVISION     "201508190652Z"
     DESCRIPTION  "Define StatusValue as a TEXTUAL-CONVENTION, define conformance group"
 	REVISION     "201508180914Z"
@@ -44,7 +47,7 @@ ChannelValue ::= TEXTUAL-CONVENTION
 	STATUS      current
 	DESCRIPTION "Video signal channel"
 	SYNTAX INTEGER {
-		unknown (-1),
+		NA (-1),
 		tv (0),
 		av (1),
 		vga1 (2),
@@ -54,11 +57,11 @@ ChannelValue ::= TEXTUAL-CONVENTION
     }
 
 vendor OBJECT-TYPE
-	SYNTAX OCTET STRING (SIZE (2..50))
+	SYNTAX DisplayString (SIZE (2..50))
 	MAX-ACCESS read-only
 	STATUS current
 	DESCRIPTION
-		"Return Vendor name in English
+		"Return Vendor name
 		"
 	DEFVAL { "nebulabd" }
 ::= { wholeset 100 }
@@ -79,9 +82,9 @@ signalChannel OBJECT-TYPE
 	STATUS current
 	DESCRIPTION
 		"Return which signal channel the device
-		 is currently using
+		 is currently using, default is N/A
 		"
-	DEFVAL { unknown }
+	DEFVAL { NA }
 ::= { wholeset 2 }
 
 -- *****************************************************************
